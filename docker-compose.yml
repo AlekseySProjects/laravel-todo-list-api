@@ -1,0 +1,29 @@
+services:
+    nginx:
+        image: nginx:latest
+        volumes:
+            - ./nginx:/etc/nginx/conf.d
+            - ./app:/var/www/html
+        ports:
+            - "80:80"
+
+    php:
+        container_name: app
+        build:
+            context: .
+            args:
+                - USER_UID=1000
+                - USER_GID=1000
+        user: "1000"
+        environment:
+            APP_ENV: local
+        volumes:
+            - ./app:/var/www/html
+        extra_hosts:
+            - 'host.docker.internal:host-gateway'
+        restart: unless-stopped
+        working_dir: /var/www/html
+
+networks:
+    default:
+        driver: bridge
