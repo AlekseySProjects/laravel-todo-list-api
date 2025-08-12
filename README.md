@@ -13,6 +13,11 @@ docker compose up -d
 docker compose exec php /bin/bash
 ```
 
+Первичная подготовка Laravel. Скопируйте и вставьте внутри контейнера при первом запуске
+```
+cp .env.example .env.local && php artisan key:generate && touch database/database.sqlite && php artisan migrate
+```
+
 ```
 php artisan test
 ```
