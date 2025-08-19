@@ -100,10 +100,7 @@ final class TaskTest extends TestCase
         $newData['status'] = true;
 
         $response = $this->putJson('/api/tasks/1', $newData);
-        $response
-            ->assertStatus(200)
-            ->assertJson(['data' => $newData])
-        ;
+        $response->assertNoContent();
     }
 
     #[Depends('testCreateTask')]
@@ -113,7 +110,7 @@ final class TaskTest extends TestCase
         $taskArray = $response['data'];
 
         $response = $this->deleteJson('/api/tasks/'.$taskArray['id']);
-        $response->assertStatus(200);
+        $response->assertNoContent();
     }
 
     #[Depends('testCreateTask')]

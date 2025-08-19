@@ -7,6 +7,7 @@ namespace App\Http\Controllers;
 use App\Models\Task;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class TodoController extends Controller
 {
@@ -45,7 +46,7 @@ class TodoController extends Controller
         ], 200);
     }
 
-    public function update(Request $request, int|string $id): JsonResponse
+    public function update(Request $request, int|string $id): JsonResponse|Response
     {
         $validated = $request->validate($this->validationRules);
 
@@ -53,16 +54,14 @@ class TodoController extends Controller
 
         $task->update($validated);
 
-        return response()->json([
-            'data' => $task,
-        ], 200);
+        return response()->noContent();
     }
 
-    public function destroy(int|string $id): JsonResponse
+    public function destroy(int|string $id): JsonResponse|Response
     {
         $task = Task::findOrFail($id);
         $task->delete();
 
-        return response()->json([], 200);
+        return response()->noContent();
     }
 }
