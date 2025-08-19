@@ -10,6 +10,12 @@ use Illuminate\Http\Request;
 
 class TodoController extends Controller
 {
+    private $validationRules = [
+        'title'        => 'required|max:255',
+        'description'  => 'nullable|string|max:1000',
+        'status'       => 'required|boolean',
+    ];
+
     public function index()
     {
         $tasks = Task::all();
@@ -21,11 +27,7 @@ class TodoController extends Controller
 
     public function store(Request $request): JsonResponse
     {
-        $validated = $request->validate([
-            'title'        => 'required|max:255',
-            'description'  => 'nullable|string',
-            'status'       => 'required|boolean',
-        ]);
+        $validated = $request->validate($this->validationRules);
 
         $task = Task::create($validated);
 
@@ -45,11 +47,7 @@ class TodoController extends Controller
 
     public function update(Request $request, int|string $id): JsonResponse
     {
-        $validated = $request->validate([
-            'title'        => 'required|max:255',
-            'description'  => 'nullable|string',
-            'status'       => 'boolean',
-        ]);
+        $validated = $request->validate($this->validationRules);
 
         $task = Task::findOrFail($id);
 
